@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+   <body>
+     <script type="text/javascript">
+       var x = document.getElementById("demo");
+       function getLocation() {
+                console.log(navigator.geolocation);
+                if (navigator.geolocation) {
+                           navigator.geolocation.getCurrentPosition(showPosition);
+                         } else {
+                                    x.innerHTML = "Geolocation is not supported by this browser.";
+                                  }
+              }
+
+       function showPosition(position) {
+                console.log(position);
+                x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+              }
+     </script>
+     <button onclick="getLocation()">GetLocation</button>
+     <p id="demo"></p>
+      <form action="" method="POST">
+          {% csrf_token %}
+        <select name="office">
+          {% for a in list_office %}
+          <option value="{{ a.id}}">{{ a.name }}</option>
+          {% endfor %}
+        </select>
+        <input type="submit" value="Attend"/>
+      </form>
+    </body>
+</html>
