@@ -18,14 +18,13 @@
        function showPosition(position) {
              var lat = position.coords.latitude;
              var lon = position.coords.longitude;
-             $("#lat").html(lat);
-             $("#long").html(lon);
+             $("#gps").html(lat + "," + lon + " [OK]");
              $("#form-latlong").val(lat + "," + lon);
              $("#get-curr-button").hide();
              $("#curr-loc").show();
        }
        function showError(position) {
-                alert(position);
+                alert("Oppsss, error !!!!");
        }
 
 if ( window.history.replaceState ) {
@@ -51,12 +50,9 @@ if ( window.history.replaceState ) {
           </div>
           <div class="card-body">
             <p>
-            <span>Latitude :</span><span id="lat"/>
+            <span>GPS Position: </span><span id="gps"/>
             </p>
 
-            <p>
-            <span>Longitude :</span><span id="long"/>
-            </p>
              <form action="" method="POST">
             {% csrf_token %}
             <input type="hidden" id="form-latlong" name="latlong"/>
@@ -64,12 +60,18 @@ if ( window.history.replaceState ) {
             <div class="col-md-12 mb-3">
             <select class="custom-select d-block w-100" name="office">
               {% for a in list_office %}
-              <option value="{{ a.id }}" >{{ a.name }}</option>
+              <option value="{{ a.office.id }}" >{{ a.office.name }}</option>
               {% endfor %}
             </select>
             </div>
+            {% if attend_type == 'I'%}
             <button type="submit" class="btn btn-lg btn-block btn-success">IN</button>
+            {% elif attend_type == 'O' %}
+            <button type="submit" class="btn btn-lg btn-block btn-danger">OUT</button>
+            {% endif %}
             </form>
+            <br/>
+            <a href="{% url 'index' %}" class="btn btn-block btn-warning" >Cancel</a>
           </div>
         </div>
       </div>
