@@ -8,7 +8,7 @@ from .models import AttendanceOffice, AttendanceLog, EmployeeAssignment
 def index(request):
     list_office = EmployeeAssignment.objects.filter(user=request.user)
     attend_type = "I"
-    last_log = AttendanceLog.objects.filter(user=request.user).order_by('-create_date').last()
+    last_log = AttendanceLog.objects.filter(user=request.user).order_by('create_date').last()
     if last_log and last_log.type == "I":
         attend_type = "O"
     if request.method == "POST":

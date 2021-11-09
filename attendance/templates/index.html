@@ -32,7 +32,17 @@ if ( window.history.replaceState ) {
 }
      </script>
     <div class="container">
-         
+        
+        {% if last_log and last_log.type == 'I' %}
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header bg-primary">
+            <h4 class="my-0 font-weight-normal">Last Attendance</h4>
+          </div>
+          <div class="card-body">
+              <h3 class="card-title pricing-card-title">On {{ last_log.office.name }} {{ last_log.create_date|timesince }} ago</small></h3>
+          </div>
+        </div>
+        {% endif %}
         <div id="get-curr-button" class="card mb-4 shadow-sm">
           <div class="card-header">
             <h4 class="my-0 font-weight-normal">Select Location</h4>
