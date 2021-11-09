@@ -17,6 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from attendance.views import index, success, error
 
+admin.site.site_header = "PLB Online Attendance"
+admin.site.site_title = "PLB Online Attendance"
+admin.site.index_title = "PLB Online Attendance"
+
 urlpatterns = [
     path('', index, name="index"),
     path('success/', success, name="success"),
