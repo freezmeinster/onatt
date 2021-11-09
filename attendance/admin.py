@@ -8,4 +8,4 @@ class AttendnaceOfficeAdmin(admin.ModelAdmin):
 
 @admin.register(AttendanceLog)
 class AttendnaceLogAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'office', 'type', 'create_date']

@@ -1,33 +1,77 @@
-<!DOCTYPE html>
-<html>
-   <body>
-     <script type="text/javascript">
-       var x = document.getElementById("demo");
+{% extends 'base.html' %}
+
+{% block content %}
+<script type="text/javascript">
+        var options = {
+		         enableHighAccuracy: true,
+		         timeout: 10000,
+		         maximumAge: 0
+	     };
        function getLocation() {
-                console.log(navigator.geolocation);
                 if (navigator.geolocation) {
-                           navigator.geolocation.getCurrentPosition(showPosition);
-                         } else {
-                                    x.innerHTML = "Geolocation is not supported by this browser.";
-                                  }
-              }
+                           navigator.geolocation.getCurrentPosition(showPosition, showError, options);
+                } else {
+                           alert("Geolocation is not supported by this browser.");
+                }
+       }
 
        function showPosition(position) {
-                console.log(position);
-                x.innerHTML = "Latitude: " + position.coords.latitude +
-                "<br>Longitude: " + position.coords.longitude;
-              }
+             var lat = position.coords.latitude;
+             var lon = position.coords.longitude;
+             $("#lat").html(lat);
+             $("#long").html(lon);
+             $("#form-latlong").val(lat + "," + lon);
+             $("#get-curr-button").hide();
+             $("#curr-loc").show();
+       }
+       function showError(position) {
+                alert(position);
+       }
+
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
      </script>
-     <button onclick="getLocation()">GetLocation</button>
-     <p id="demo"></p>
-      <form action="" method="POST">
-          {% csrf_token %}
-        <select name="office">
-          {% for a in list_office %}
-          <option value="{{ a.id}}">{{ a.name }}</option>
-          {% endfor %}
-        </select>
-        <input type="submit" value="Attend"/>
-      </form>
-    </body>
-</html>
+    <div class="container">
+         
+        <div id="get-curr-button" class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Select Location</h4>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title pricing-card-title">Please click "Get Current Location"</small></h3>
+            <button  onclick="getLocation()" type="button" class="btn btn-lg btn-block btn-primary">Get Current Location</button>
+          </div>
+        </div>
+
+      <div style="display: none;" id="curr-loc" class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Select Office to Attend</h4>
+          </div>
+          <div class="card-body">
+            <p>
+            <span>Latitude :</span><span id="lat"/>
+            </p>
+
+            <p>
+            <span>Longitude :</span><span id="long"/>
+            </p>
+             <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="form-latlong" name="latlong"/>
+            <input type="hidden" name="type" value="{{ attend_type }}"/>
+            <div class="col-md-12 mb-3">
+            <select class="custom-select d-block w-100" name="office">
+              {% for a in list_office %}
+              <option value="{{ a.id }}" >{{ a.name }}</option>
+              {% endfor %}
+            </select>
+            </div>
+            <button type="submit" class="btn btn-lg btn-block btn-success">IN</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+{% endblock %}
