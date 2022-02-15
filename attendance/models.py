@@ -22,6 +22,7 @@ class AttendanceLog(models.Model):
     office = models.ForeignKey("attendance.AttendanceOffice",
             on_delete=models.CASCADE)
     type = models.CharField(choices=TYPE, default=TYPE_IN, max_length=1)
+    longlat = models.CharField(max_length=255,null=True,blank=True)
 
     def __str__(self):
         return self.user.username

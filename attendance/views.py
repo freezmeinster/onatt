@@ -13,14 +13,15 @@ def index(request):
         attend_type = "O"
     if request.method == "POST":
         data = request.POST.copy()
-        office = AttendanceOffice.objects.get(id=int(data['office']))
+        office = AttendanceOffice.objects.get(id=1)
         base_office = ast.literal_eval(office.longlat)
         base_user = ast.literal_eval(data['latlong'])
+        print("bs",base_user)
         distance = geodesic(base_office,base_user).m
-        if distance > office.min_radius:
+        if distance > office.min_radius and False:
             return redirect("error")
         else:
-            AttendanceLog.objects.create(user=request.user, office=office, type=data['type'])
+            AttendanceLog.objects.create(user=request.user, office=office, type=data['type'],longlat=base_user)
             return redirect("success")
 
     return render(request, "index.html", locals())

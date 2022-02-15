@@ -22,6 +22,11 @@
              $("#form-latlong").val(lat + "," + lon);
              $("#get-curr-button").hide();
              $("#curr-loc").show();
+
+	     let url = "https://www.google.com/maps/embed/v1/view?key=AIzaSyDallYEqUDWrt5P9fs4TbpDlFI81aCfluE&center="+lat+","+lon+"&zoom=14"
+	     url = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDallYEqUDWrt5P9fs4TbpDlFI81aCfluE&q="+lat+","+lon+"&zoom=14&center="+lat+","+lon
+       	     document.getElementById('frameloc').src = url;
+       	     document.getElementById('frameloc').width = "600";
        }
        function showError(position) {
                 alert("Oppsss, error !!!!");
@@ -39,7 +44,7 @@ if ( window.history.replaceState ) {
             <h4 class="my-0 font-weight-normal">Last Attendance</h4>
           </div>
           <div class="card-body">
-              <h3 class="card-title pricing-card-title">On {{ last_log.office.name }} {{ last_log.create_date|timesince }} ago</small></h3>
+              <h3 class="card-title pricing-card-title">Logged in {{ last_log.create_date|timesince }} ago</small></h3>
           </div>
         </div>
         {% endif %}
@@ -56,9 +61,10 @@ if ( window.history.replaceState ) {
       <div style="display: none;" id="curr-loc" class="card-deck mb-3 text-center">
         <div class="card mb-4 shadow-sm">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Select Office to Attend</h4>
+            <h4 class="my-0 font-weight-normal">Current Position</h4>
           </div>
           <div class="card-body">
+		  <iframe id="frameloc" class="col-md-12" src="" scrolling="no" width="600" height="450" style="border:0;" loading="lazy"></iframe>
             <p>
             <span>GPS Position: </span><span id="gps"/>
             </p>
@@ -68,11 +74,6 @@ if ( window.history.replaceState ) {
             <input type="hidden" id="form-latlong" name="latlong"/>
             <input type="hidden" name="type" value="{{ attend_type }}"/>
             <div class="col-md-12 mb-3">
-            <select class="custom-select d-block w-100" name="office">
-              {% for a in list_office %}
-              <option value="{{ a.office.id }}" >{{ a.office.name }}</option>
-              {% endfor %}
-            </select>
             </div>
             {% if attend_type == 'I'%}
             <button type="submit" class="btn btn-lg btn-block btn-success">IN</button>
